@@ -25,7 +25,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./ChallengeApi
+        working-directory: ./CardApi
     strategy: 
       matrix: 
         os: [windows-latest]
