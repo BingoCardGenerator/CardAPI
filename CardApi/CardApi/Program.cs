@@ -1,3 +1,10 @@
+using CardApi.DBContext;
+using CardApi.Models;
+using CardApi.Interfaces;
+using CardApi.Repositories;
+using Microsoft.EntityFrameworkCore;
+using CardApi;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +14,43 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Adds a single instance of the Bingocard repository to the API.
+builder.Services.AddTransient<IBingoCardRepository, BingoCardRepository>();
+
+//Adds the database seed to the API
+builder.Services.AddTransient<Seed>();
+
+builder.Services.AddDbContext<CardContext>(options =>
+   options.UseSqlServer(builder.Configuration.GetConnectionString("BingoConnStr")
+        )
+   );
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+    builder =>
+    {
+        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+    });
+});
+
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+    SeedData(app);
+
+void SeedData(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    if (scopedFactory == null) return;
+
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<Seed>();
+        if (service != null) service.SeedContext();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -15,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
