@@ -29,6 +29,7 @@ namespace CardApi.Controllers
                 ServiceResultCode.Ok => Ok(serviceresponse.Data),
                 ServiceResultCode.NotFound => NotFound(),
                 ServiceResultCode.BadRequest => BadRequest(serviceresponse.Message),
+                ServiceResultCode.UnprocessableEntity => UnprocessableEntity(serviceresponse.Message),
                 _ => throw new InvalidOperationException("Server Error: Unexpected service response")
             };
         }
@@ -54,6 +55,7 @@ namespace CardApi.Controllers
                 ServiceResultCode.Ok => NoContent(),
                 ServiceResultCode.NotFound => NotFound(),
                 ServiceResultCode.BadRequest => BadRequest(serviceresponse.Message),
+                ServiceResultCode.UnprocessableEntity => UnprocessableEntity(serviceresponse.Message),
                 _ => throw new InvalidOperationException("Server Error: Unexpected service response")
             };
         }
