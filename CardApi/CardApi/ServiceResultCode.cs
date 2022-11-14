@@ -18,6 +18,11 @@
         /// <summary>
         /// The requested data could not be retrieved.
         /// </summary>
-        NotFound = 401
+        NotFound = 401,
+
+        /// <summary>
+        /// The request could not be processed with the given entity.
+        /// </summary>
+        UnprocessableEntity = 422,
     }
 }
