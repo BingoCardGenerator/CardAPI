@@ -79,7 +79,6 @@ namespace CardApi.Repositories
                     Name = newbingocard.Name,
                     Columns = newbingocard.Columns,
                     Rows = newbingocard.Rows
-                    //TODO: Probably add filling of bingo card here.
                 };
 
                 await _context.BingoCards.AddAsync(newcard);
@@ -173,11 +172,22 @@ namespace CardApi.Repositories
         /// <returns>A message if anything is wrong.</returns>
         private static string ValidateNewBingoCard(BingoCardForCreationModel newbingocard)
         {
-            if (newbingocard.Name == string.Empty) return "Please enter a name.";
-            if (newbingocard.Columns <= 0) return $"{newbingocard.Columns} is not a valid amount of columns. Must be higher then 0.";
-            if (newbingocard.Rows <= 0) return $"{newbingocard.Rows} is not a valid amount of Rows. Must be higher then 0.";
+            if (!CardNameEmpty(newbingocard.Name)) return "Please enter a name.";
+            if (!HasColumsAndRows(newbingocard.Columns, newbingocard.Rows)) return "Columns and Rows may not be 0.";
 
             return String.Empty;
+        }
+
+        private static bool CardNameEmpty(string cardName)
+        {
+            if(cardName == null) return false;
+            return true;
+        }
+
+        private static bool HasColumsAndRows(int colums, int rows)
+        {
+            if (colums > 0 && rows > 0 ) return true;
+            return false;
         }
 
     }
