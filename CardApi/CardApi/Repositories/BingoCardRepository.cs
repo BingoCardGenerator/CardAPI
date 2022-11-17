@@ -98,7 +98,7 @@ namespace CardApi.Repositories
             BingoCardModel? card = GetBingoCardById(cardid).Result.Data;
             List<Guid> selectedChallenges = selectedchallenges.ToList();
 
-            if(card == null || card.Name == String.Empty)
+            if(card == null)
             {
                 return new ServiceResponse
                 {
@@ -108,7 +108,8 @@ namespace CardApi.Repositories
                 };
             }
 
-            if(_context.BingoCardChallenges.Any(b => b.BingoCardId == card.Id))
+
+            if (CardIsGenerated(card.Id))
             {
                 return new ServiceResponse
                 {
@@ -119,18 +120,7 @@ namespace CardApi.Repositories
             }
 
             int numberOfChallenges = card.Rows * card.Columns;
-
-            if(numberOfChallenges <= 0)
-            {
-                return new ServiceResponse
-                {
-                    SuccesFull = false,
-                    ServiceResultCode = ServiceResultCode.UnprocessableEntity,
-                    Message = "422: Card does not have a valid amount of rows or colums."
-                };
-            }
-
-            if(selectedChallenges.Count < numberOfChallenges)
+            if(!EnoughSelectedChallenges(numberOfChallenges, selectedChallenges.Count))
             {
                 return new ServiceResponse
                 {
@@ -172,16 +162,28 @@ namespace CardApi.Repositories
         /// <returns>A message if anything is wrong.</returns>
         private static string ValidateNewBingoCard(BingoCardForCreationModel newbingocard)
         {
-            if (!CardNameEmpty(newbingocard.Name)) return "Please enter a name.";
+            if (CardNameEmpty(newbingocard.Name)) return "Please enter a name.";
             if (!HasColumsAndRows(newbingocard.Columns, newbingocard.Rows)) return "Columns and Rows may not be 0.";
 
             return String.Empty;
         }
 
+        private bool CardIsGenerated(Guid cardid)
+        {
+            if(_context.BingoCardChallenges.Any(b => b.BingoCardId == cardid)) return true;
+            return false;
+        }
+
+        private static bool EnoughSelectedChallenges(int required, int selected)
+        {
+            if(selected < required) return false;
+            return true;
+        }
+
         private static bool CardNameEmpty(string cardName)
         {
-            if(cardName == null) return false;
-            return true;
+            if(cardName == null) return true;
+            return false;
         }
 
         private static bool HasColumsAndRows(int colums, int rows)
