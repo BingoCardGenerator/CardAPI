@@ -32,10 +32,19 @@ namespace CardApi.Controllers
         /// </returns>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IReadOnlyList<BingoCardModel>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [HttpGet]
+        [HttpGet("/bingocards")]
         public async Task<IActionResult> GetAllBingoCards()
         {
             return GetActionResult(await _bingoCardRepository.GetAllBingoCards());
+        }
+
+
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BingoCardModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("/bingocards/{id}")]
+        public async Task<IActionResult> GetById(Guid cardid)
+        {
+            return GetActionResult(await _bingoCardRepository.GetBingoCardById(cardid));
         }
 
         /// <summary>
@@ -48,12 +57,21 @@ namespace CardApi.Controllers
         /// </returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPost]
-        public async Task<IActionResult> CreateNewBingoCard(BingoCardForCreationModel forCreationModel)
+        [HttpPost("/bingocard")]
+        public async Task<IActionResult> CreateNewBlankBingoCard(BingoCardForCreationModel forCreationModel)
         {
             var result = await _bingoCardRepository.CreateBingoCard(forCreationModel);
 
             return GetActionResult(result);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("/generate/bingocardchallenge")]
+        public async Task<IActionResult> GenerateBingoCard(Guid cardid, IEnumerable<Guid> selectedchallenges)
+        {
+            return GetActionResult(await _bingoCardRepository.GenerateBingoCard(cardid, selectedchallenges));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CardApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CardApi.Interfaces
 {
@@ -14,9 +15,23 @@ namespace CardApi.Interfaces
         Task<ServiceResponse<IEnumerable<BingoCardModel>>> GetAllBingoCards();
 
         /// <summary>
-        /// Validates and creates a new bingo card
+        /// Gets a single card by it's id.
         /// </summary>
-        /// <param name="newbingocard">The bingo card that needs to be created</param>
+        /// <param name="cardid"> The id of the card to get.</param>
+        /// <returns>The requested card.</returns>
+        Task<ServiceResponse<BingoCardModel>> GetBingoCardById(Guid cardid);
+
+        /// <summary>
+        /// Validates and creates a new bingo card.
+        /// </summary>
+        /// <param name="newbingocard">The bingo card that needs to be created.</param>
         Task<ServiceResponse> CreateBingoCard(BingoCardForCreationModel newbingocard);
+
+        /// <summary>
+        /// Generates a bingo card based on a given list of selected challenges.
+        /// </summary>
+        /// <param name="cardid"> The id of the bingo card that has to be generated.</param>
+        /// <param name="selectedchallenges"> A list with the id's of the selected challenges.</param>
+        Task<ServiceResponse> GenerateBingoCard(Guid cardid, [FromBody] IEnumerable<Guid> selectedchallenges);
     }
 }
