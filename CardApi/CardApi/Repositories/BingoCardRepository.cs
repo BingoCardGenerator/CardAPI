@@ -155,6 +155,31 @@ namespace CardApi.Repositories
             };
         }
 
+        public async Task<ServiceResponse<IEnumerable<BingoCardChallengeModel>>> GetAllChallengesOfCard(Guid cardid)
+        {
+            List<BingoCardChallengeModel> challenges = new List<BingoCardChallengeModel>();
+            if (CardIsGenerated(cardid))
+            {
+                challenges = await _context.BingoCardChallenges.Where(b => b.BingoCardId == cardid).ToListAsync();
+
+                return new ServiceResponse<IEnumerable<BingoCardChallengeModel>>
+                {
+                    Data = challenges,
+                    SuccesFull = true,
+                    ServiceResultCode = ServiceResultCode.Ok,
+                    Message = "200: Challenges succesfully gotten."
+                };
+            }
+
+            return new ServiceResponse<IEnumerable<BingoCardChallengeModel>>
+            {
+                Data = challenges,
+                SuccesFull = false,
+                ServiceResultCode = ServiceResultCode.NotFound,
+                Message = "404: This bingocard has no challenges."
+            };
+        }
+
         /// <summary>
         /// Validates of all values for a new bingo card are entered and within restricitons.
         /// </summary>
@@ -168,24 +193,46 @@ namespace CardApi.Repositories
             return String.Empty;
         }
 
+        /// <summary>
+        /// Checks if a bingo card is generated.
+        /// </summary>
+        /// <param name="cardid">The id of the card to check.</param>
+        /// <returns>Wheter a card is generated or not.</returns>
         private bool CardIsGenerated(Guid cardid)
         {
             if(_context.BingoCardChallenges.Any(b => b.BingoCardId == cardid)) return true;
             return false;
         }
 
+        /// <summary>
+        /// Checks if enough challenges have been selected to fill the bingo card.
+        /// </summary>
+        /// <param name="required">How many challenges are needed to fill the card.</param>
+        /// <param name="selected">How many challenges have been selected.</param>
+        /// <returns>Wheter enough cards have been selected.</returns>
         private static bool EnoughSelectedChallenges(int required, int selected)
         {
             if(selected < required) return false;
             return true;
         }
 
+        /// <summary>
+        /// Checks if a card has a name.
+        /// </summary>
+        /// <param name="cardName">The name prop of the card.</param>
+        /// <returns>Wheter a card has a name.</returns>
         private static bool CardNameEmpty(string cardName)
         {
             if(cardName == null) return true;
             return false;
         }
 
+        /// <summary>
+        /// Checks if a card has both a number of columns and a number of rows.
+        /// </summary>
+        /// <param name="colums"> The column prop of the card.</param>
+        /// <param name="rows">The row prop of the card.</param>
+        /// <returns>Wheter the card has rows and columns.</returns>
         private static bool HasColumsAndRows(int colums, int rows)
         {
             if (colums > 0 && rows > 0 ) return true;
