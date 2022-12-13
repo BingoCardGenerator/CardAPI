@@ -33,12 +33,5 @@ namespace CardApi.Interfaces
         /// <param name="cardid"> The id of the bingo card that has to be generated.</param>
         /// <param name="selectedchallenges"> A list with the id's of the selected challenges.</param>
         Task<ServiceResponse> GenerateBingoCard(Guid cardid, [FromBody] IEnumerable<Guid> selectedchallenges);
-
-        /// <summary>
-        /// Gets all the challenges ascociated with a bingo card.
-        /// </summary>
-        /// <param name="cardid">The id of the bingo card.</param>
-        /// <returns>A list of challenges if the bingo card has any.</returns>
-        Task<ServiceResponse<IEnumerable<BingoCardChallengeModel>>> GetAllChallengesOfCard(Guid cardid);
     }
 }

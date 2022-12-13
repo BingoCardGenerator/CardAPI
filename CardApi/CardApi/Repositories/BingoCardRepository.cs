@@ -33,6 +33,11 @@ namespace CardApi.Repositories
                 };
             }
 
+            foreach (BingoCardModel card in bingocards)
+            {
+                card.Challenges = GetAllChallengesOfCard(card.Id);
+            }
+
             return new ServiceResponse<IEnumerable<BingoCardModel>>
             {
                 Data = bingocards,
@@ -58,6 +63,8 @@ namespace CardApi.Repositories
                     Message = "404: Card was not found."
                 };
             }
+
+            //card.Challenges = GetAllChallengesOfCard(cardid);
 
             return new ServiceResponse<BingoCardModel>
             {
@@ -155,29 +162,20 @@ namespace CardApi.Repositories
             };
         }
 
-        public async Task<ServiceResponse<IEnumerable<BingoCardChallengeModel>>> GetAllChallengesOfCard(Guid cardid)
+        /// <summary>
+        /// Gets the all the challenges on the bingo card.
+        /// </summary>
+        /// <param name="cardid"> the id of the card.</param>
+
+        private List<BingoCardChallengeModel> GetAllChallengesOfCard(Guid cardid)
         {
             List<BingoCardChallengeModel> challenges = new List<BingoCardChallengeModel>();
             if (CardIsGenerated(cardid))
             {
-                challenges = await _context.BingoCardChallenges.Where(b => b.BingoCardId == cardid).ToListAsync();
-
-                return new ServiceResponse<IEnumerable<BingoCardChallengeModel>>
-                {
-                    Data = challenges,
-                    SuccesFull = true,
-                    ServiceResultCode = ServiceResultCode.Ok,
-                    Message = "200: Challenges succesfully gotten."
-                };
+                challenges = _context.BingoCardChallenges.Where(b => b.BingoCardId == cardid).ToList();
             }
 
-            return new ServiceResponse<IEnumerable<BingoCardChallengeModel>>
-            {
-                Data = challenges,
-                SuccesFull = false,
-                ServiceResultCode = ServiceResultCode.NotFound,
-                Message = "404: This bingocard has no challenges."
-            };
+            return challenges;
         }
 
         /// <summary>
