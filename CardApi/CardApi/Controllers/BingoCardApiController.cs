@@ -52,7 +52,7 @@ namespace CardApi.Controllers
 
             return serviceresponse.ServiceResultCode switch
             {
-                ServiceResultCode.Ok => NoContent(),
+                ServiceResultCode.Ok => Ok(),
                 ServiceResultCode.NotFound => NotFound(),
                 ServiceResultCode.BadRequest => BadRequest(serviceresponse.Message),
                 ServiceResultCode.UnprocessableEntity => UnprocessableEntity(serviceresponse.Message),

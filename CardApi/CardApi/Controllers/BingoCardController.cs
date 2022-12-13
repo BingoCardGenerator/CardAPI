@@ -65,6 +65,11 @@ namespace CardApi.Controllers
             return GetActionResult(result);
         }
 
+        /// <summary>
+        /// API endpoint to generate a bingo card.
+        /// </summary>
+        /// <param name="cardid">The id of the card to generate.</param>
+        /// <param name="selectedchallenges">A list of challenges to use for the generation.</param>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -73,5 +78,19 @@ namespace CardApi.Controllers
         {
             return GetActionResult(await _bingoCardRepository.GenerateBingoCard(cardid, selectedchallenges));
         }
+
+        /// <summary>
+        /// API endpoint to get all the challenges on a bingo card.
+        /// </summary>
+        /// <param name="cardid">The id of the card.</param>
+        /// <returns>A list of challenges on a bingo card if it has any.</returns>
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[HttpGet("/challenges/bingocardchallenges")]
+        //public async Task<IActionResult> GetBingoCardChallenges(Guid cardid)
+        //{
+        //    return GetActionResult(await _bingoCardRepository.GetAllChallengesOfCard(cardid));
+        //}
+
     }
 }

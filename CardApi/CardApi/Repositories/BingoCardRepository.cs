@@ -33,6 +33,11 @@ namespace CardApi.Repositories
                 };
             }
 
+            foreach (BingoCardModel card in bingocards)
+            {
+                card.Challenges = GetAllChallengesOfCard(card.Id);
+            }
+
             return new ServiceResponse<IEnumerable<BingoCardModel>>
             {
                 Data = bingocards,
@@ -58,6 +63,8 @@ namespace CardApi.Repositories
                     Message = "404: Card was not found."
                 };
             }
+
+            //card.Challenges = GetAllChallengesOfCard(cardid);
 
             return new ServiceResponse<BingoCardModel>
             {
@@ -156,6 +163,22 @@ namespace CardApi.Repositories
         }
 
         /// <summary>
+        /// Gets the all the challenges on the bingo card.
+        /// </summary>
+        /// <param name="cardid"> the id of the card.</param>
+
+        private List<BingoCardChallengeModel> GetAllChallengesOfCard(Guid cardid)
+        {
+            List<BingoCardChallengeModel> challenges = new List<BingoCardChallengeModel>();
+            if (CardIsGenerated(cardid))
+            {
+                challenges = _context.BingoCardChallenges.Where(b => b.BingoCardId == cardid).ToList();
+            }
+
+            return challenges;
+        }
+
+        /// <summary>
         /// Validates of all values for a new bingo card are entered and within restricitons.
         /// </summary>
         /// <param name="newbingocard"></param>
@@ -168,24 +191,46 @@ namespace CardApi.Repositories
             return String.Empty;
         }
 
+        /// <summary>
+        /// Checks if a bingo card is generated.
+        /// </summary>
+        /// <param name="cardid">The id of the card to check.</param>
+        /// <returns>Wheter a card is generated or not.</returns>
         private bool CardIsGenerated(Guid cardid)
         {
             if(_context.BingoCardChallenges.Any(b => b.BingoCardId == cardid)) return true;
             return false;
         }
 
+        /// <summary>
+        /// Checks if enough challenges have been selected to fill the bingo card.
+        /// </summary>
+        /// <param name="required">How many challenges are needed to fill the card.</param>
+        /// <param name="selected">How many challenges have been selected.</param>
+        /// <returns>Wheter enough cards have been selected.</returns>
         private static bool EnoughSelectedChallenges(int required, int selected)
         {
             if(selected < required) return false;
             return true;
         }
 
+        /// <summary>
+        /// Checks if a card has a name.
+        /// </summary>
+        /// <param name="cardName">The name prop of the card.</param>
+        /// <returns>Wheter a card has a name.</returns>
         private static bool CardNameEmpty(string cardName)
         {
             if(cardName == null) return true;
             return false;
         }
 
+        /// <summary>
+        /// Checks if a card has both a number of columns and a number of rows.
+        /// </summary>
+        /// <param name="colums"> The column prop of the card.</param>
+        /// <param name="rows">The row prop of the card.</param>
+        /// <returns>Wheter the card has rows and columns.</returns>
         private static bool HasColumsAndRows(int colums, int rows)
         {
             if (colums > 0 && rows > 0 ) return true;
