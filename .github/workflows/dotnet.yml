@@ -2,7 +2,7 @@ name: .NET Core CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, "Develop" ]
     paths-ignore:
       - '**.gitignore'
       - '**/README.md'
