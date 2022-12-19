@@ -8,7 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["./CardApi/CardApi/CardApi.csproj", "CardApi/"]
-COPY NuGet.config "CardApi/"
 RUN dotnet restore "CardApi/CardApi.csproj"
 COPY . .
 WORKDIR "/src/CardApi"
