@@ -19,4 +19,4 @@ RUN dotnet publish "CardApi.csproj" -c Release -o /app/publish /p:UseAppHost=fal
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CardApi.dll"
+ENTRYPOINT ["dotnet", "CardApi.dll"]
