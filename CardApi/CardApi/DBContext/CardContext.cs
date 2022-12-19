@@ -21,13 +21,8 @@ namespace CardApi.DBContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BingoCardModel>()
-                .HasKey(b => b.Id);
             modelBuilder.Entity<BingoCardChallengeModel>()
                 .HasKey(bc => new { bc.BingoCardId, bc.ChallengeId });
-            modelBuilder.Entity<BingoCardChallengeModel>()
-                .HasOne(bc => bc.BingoCard)
-                .WithMany(b => b.Challenges);
         }
     }
 }

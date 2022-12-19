@@ -84,13 +84,13 @@ namespace CardApi.Controllers
         /// </summary>
         /// <param name="cardid">The id of the card.</param>
         /// <returns>A list of challenges on a bingo card if it has any.</returns>
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //[HttpGet("/challenges/bingocardchallenges")]
-        //public async Task<IActionResult> GetBingoCardChallenges(Guid cardid)
-        //{
-        //    return GetActionResult(await _bingoCardRepository.GetAllChallengesOfCard(cardid));
-        //}
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("/challenges/bingocardchallenges")]
+        public async Task<IActionResult> GetBingoCardChallenges(Guid cardid)
+        {
+            return GetActionResult(await _bingoCardRepository.GetAllChallengesOfCard(cardid));
+        }
 
     }
 }

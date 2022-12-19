@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CardApi.Models
@@ -27,6 +26,10 @@ namespace CardApi.Models
         [Required]
         public int Rows { get; set; }
 
+        /// <summary>
+        /// The challenges on a bingo card
+        /// </summary>
+        public ICollection<BingoCardChallengeModel>? BingoCardChallenge { get; set; }
     }
 
     /// <summary>
@@ -47,12 +50,6 @@ namespace CardApi.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set;}
-
-        /// <summary>
-        /// The challenges on a bingo card.
-        /// </summary>
-        [Required]
-        public List<BingoCardChallengeModel>? Challenges { get; set; }
+        public Guid Id { get; set;} 
     }
 }

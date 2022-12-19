@@ -26,9 +26,6 @@ namespace CardApi.Models
         [Required]
         public int Position { get; set; }
 
-        [Required]
-        public BingoCardModel? BingoCard { get; set; }
-
     }
 
     /// <summary>

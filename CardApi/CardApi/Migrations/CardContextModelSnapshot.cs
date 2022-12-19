@@ -30,10 +30,15 @@ namespace CardApi.Migrations
                     b.Property<Guid>("ChallengeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("BingoCardModelId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Position")
                         .HasColumnType("int");
 
                     b.HasKey("BingoCardId", "ChallengeId");
+
+                    b.HasIndex("BingoCardModelId");
 
                     b.ToTable("BingoCardChallenges");
                 });
@@ -61,18 +66,14 @@ namespace CardApi.Migrations
 
             modelBuilder.Entity("CardApi.Models.BingoCardChallengeModel", b =>
                 {
-                    b.HasOne("CardApi.Models.BingoCardModel", "BingoCard")
-                        .WithMany("BingoCardChallengeModels")
-                        .HasForeignKey("BingoCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BingoCard");
+                    b.HasOne("CardApi.Models.BingoCardModel", null)
+                        .WithMany("BingoCardChallenge")
+                        .HasForeignKey("BingoCardModelId");
                 });
 
             modelBuilder.Entity("CardApi.Models.BingoCardModel", b =>
                 {
-                    b.Navigation("BingoCardChallengeModels");
+                    b.Navigation("BingoCardChallenge");
                 });
 #pragma warning restore 612, 618
         }
