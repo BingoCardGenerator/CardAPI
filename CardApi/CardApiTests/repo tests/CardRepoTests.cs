@@ -105,7 +105,6 @@ namespace CardAPITests.RepoTests
 
         private async void PopulateDatabase()
         {
-            Console.WriteLine("gello")
             await _context.BingoCards.AddRangeAsync(
                 new BingoCardModel { Id = Guid.NewGuid(), Name = "Card 1" },
                 new BingoCardModel { Id = Guid.NewGuid(), Name = "Card 2" },
