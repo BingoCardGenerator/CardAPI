@@ -68,7 +68,7 @@
                     Columns = 2
                 }
                 );
-            
+
             //Assert
             result.SuccesFull
                 .Should()
