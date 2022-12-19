@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardApi", "CardApi\CardApi.csproj", "{912EB48D-6C0A-4012-A56B-CF65D35E40C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardApiTests", "CardApiTests\CardApiTests.csproj", "{90670E1D-7EAD-4403-BA7A-9D6DB021B5F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CardAPITests", "CardApiTests\CardAPITests.csproj", "{90670E1D-7EAD-4403-BA7A-9D6DB021B5F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
