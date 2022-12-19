@@ -2,6 +2,7 @@
 using CardApi.Interfaces;
 using CardApi.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace CardApi.Repositories
@@ -222,6 +223,7 @@ namespace CardApi.Repositories
         private static bool CardNameEmpty(string cardName)
         {
             if(cardName == null) return true;
+            if (cardName == "") return true;
             return false;
         }
 
